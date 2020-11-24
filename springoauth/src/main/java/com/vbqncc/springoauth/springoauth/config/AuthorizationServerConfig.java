@@ -15,42 +15,43 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
  *
  * @create 2020-11-21 14:29
  */
-@Configuration
-@EnableAuthorizationServer
-public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+    @Configuration
+    @EnableAuthorizationServer
+    public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+        @Autowired
+        PasswordEncoder passwordEncoder;
 
-    @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory()
-                //配置clientId
-                .withClient("admin")
-                //配置client-secret
-                .secret(passwordEncoder.encode("112233"))
-                //配置tocken过期时间
-                .accessTokenValiditySeconds(3600)
-                //重定向跳转
-                .redirectUris("http://www.baidu.com")
-                //配置申请权限范围
-                .scopes("all")
-                //配置granttype为授权码模式
-                //.authorizedGrantTypes("authorization_code");
-                .authorizedGrantTypes("password");
+        @Override
+        public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+            clients.inMemory()
+                    //配置clientId
+                    .withClient("admin")
+                    //配置client-secret
+                    .secret(passwordEncoder.encode("112233"))
+                    //配置tocken过期时间
+                    .accessTokenValiditySeconds(3600)
+                    //重定向跳转
+                    .redirectUris("http://www.baidu.com")
+                    //配置申请权限范围
+                    .scopes("all")
+                    //配置granttype为授权码模式
+                    .authorizedGrantTypes("authorization_code");
+                    //密码模式使用展示注释
+//                    .authorizedGrantTypes("password");
 
+        }
+
+         //密码模式使用暂时注释
+//        @Autowired
+//        AuthenticationManager AuthenticationManager;
+//        @Autowired
+//        MyUserDetilService MyUserDetilService;
+//
+//
+//        @Override
+//        public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+//            endpoints.authenticationManager(AuthenticationManager).userDetailsService(MyUserDetilService);
+//        }
     }
-
-    @Autowired
-    AuthenticationManager AuthenticationManager;
-    @Autowired
-    MyUserDetilService MyUserDetilService;
-
-    //密码模式
-    @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-
-        endpoints.authenticationManager(AuthenticationManager).userDetailsService(MyUserDetilService);
-    }
-}
